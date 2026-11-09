@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7DDAE">
+<title>Trivial de Josa · Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cielo1: #FFF6E6;
+  --cielo2: #F7DDAE;
+  --roca1: #E39A62;
+  --roca2: #C8693A;
+  --roca3: #9A4A26;
+  --tinta: #3A2418;
+  --tinta2: #6E4A36;
+  --papel: #FFFBF3;
+  --borde: #EAD3B2;
+  --rio: #6FA9C9;
+  --a: #D94A3A;
+  --b: #2D77C8;
+  --c: #D9960F;
+  --d: #3F9A55;
+  --ok: #2F9E57;
+  --mal: #D64535;
+  --oro: #E4A11B;
+  --plata: #A9B1BA;
+  --bronce: #C07A46;
+  --sombra: 0 10px 30px rgba(90, 45, 20, .18);
+  --radio: 20px;
+  --titulo: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --texto: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--texto);
+  color: var(--tinta);
+  background: linear-gradient(180deg, var(--cielo1) 0%, var(--cielo2) 70%);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+button { font: inherit; cursor: pointer; border: 0; }
+h1, h2, h3 { font-family: var(--titulo); margin: 0; letter-spacing: -.01em; }
+
+/* ---------- paisaje ---------- */
+.paisaje { position: fixed; inset: auto 0 0 0; height: 34vh; min-height: 180px; pointer-events: none; z-index: 0; }
+.paisaje .capa { position: absolute; left: -5%; width: 110%; bottom: 0; height: 100%; }
+.paisaje .c3 path { fill: var(--roca1); opacity: .55; }
+.paisaje .c2 path { fill: var(--roca2); opacity: .8; }
+.paisaje .c1 path { fill: var(--roca3); }
+.paisaje .c1 .rio { fill: var(--rio); opacity: .85; }
+.paisaje .c3 { animation: deriva 40s ease-in-out infinite alternate; }
+.paisaje .c2 { animation: deriva 28s ease-in-out infinite alternate-reverse; }
+.paisaje .pueblo { position: absolute; bottom: 21%; left: 50%; width: min(260px, 44vw); transform: translateX(-50%); }
+.paisaje .pueblo .casas > * { fill: #7a3a1d; }
+.paisaje .pueblo .hueco { fill: #f7ddae; }
+.paisaje .sol { position: fixed; top: 6vh; right: 8vw; width: 90px; height: 90px; border-radius: 50%;
+  background: radial-gradient(circle, #FFE7A6 0 45%, rgba(255, 214, 120, .35) 46% 70%, transparent 71%);
+  animation: latido 6s ease-in-out infinite; }
+.paisaje .nube { position: fixed; height: 26px; border-radius: 26px; background: rgba(255, 255, 255, .75); }
+.paisaje .nube::before { content: ''; position: absolute; width: 50%; height: 180%; left: 20%; bottom: 20%; border-radius: 50%; background: inherit; }
+.paisaje .n1 { top: 10vh; width: 120px; animation: nube 60s linear infinite; }
+.paisaje .n2 { top: 20vh; width: 80px; animation: nube 85s linear infinite -30s; opacity: .7; }
+.paisaje .n3 { top: 5vh; width: 100px; animation: nube 70s linear infinite -50s; opacity: .6; }
+@keyframes deriva { from { transform: translateX(-2%); } to { transform: translateX(2%); } }
+@keyframes nube { from { transform: translateX(-160px); } to { transform: translateX(calc(100vw + 160px)); } }
+@keyframes latido { 50% { transform: scale(1.08); } }
+
+/* ---------- ammonites ---------- */
+.amonite .am-fondo { fill: #F3D3A0; stroke: #B86A3A; stroke-width: 2; }
+.amonite .am-costillas { stroke: #B8743F; stroke-width: 1.4; fill: none; opacity: .75; }
+.amonite .am-espiral { stroke: #7A3A1D; stroke-width: 2.6; fill: none; stroke-linecap: round; }
+.amonite.gira { animation: gira 14s linear infinite; }
+.amonite.rapido { animation: gira 2.2s linear infinite; }
+@keyframes gira { to { transform: rotate(360deg); } }
+
+/* ---------- comunes ---------- */
+.tarjeta { background: var(--papel); border: 2px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); }
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca .amonite { width: 46px; height: 46px; flex: none; }
+.marca h1 { font-size: 1.35rem; line-height: 1; }
+.marca small { display: block; font-family: var(--texto); font-weight: 700; font-size: .78rem; color: var(--tinta2); letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; }
+.btn { background: var(--roca2); color: #fff; font-weight: 800; padding: 14px 22px; border-radius: 14px;
+  box-shadow: 0 5px 0 var(--roca3); transition: transform .08s, box-shadow .08s, filter .2s; }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--roca3); }
+.btn:disabled { filter: grayscale(.8) opacity(.6); cursor: default; }
+.btn.sec { background: var(--papel); color: var(--tinta); box-shadow: 0 4px 0 var(--borde); border: 2px solid var(--borde); }
+.btn.peligro { background: var(--mal); box-shadow: 0 5px 0 #8f2a20; }
+
+.op-a { --col: var(--a); } .op-b { --col: var(--b); } .op-c { --col: var(--c); } .op-d { --col: var(--d); }
+
+/* cuenta atrás */
+.cuenta { position: relative; width: 74px; height: 74px; flex: none; }
+.cuenta svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.cuenta .ca-fondo { fill: var(--papel); stroke: var(--borde); stroke-width: 9; }
+.cuenta .ca-barra { fill: none; stroke: var(--roca2); stroke-width: 9; stroke-linecap: round; }
+.cuenta span { position: absolute; inset: 0; display: grid; place-items: center; font: 800 1.7rem var(--titulo); }
+.cuenta.urgente .ca-barra { stroke: var(--mal); }
+.cuenta.urgente span { color: var(--mal); animation: pulso .5s ease-in-out infinite alternate; }
+@keyframes pulso { to { transform: scale(1.15); } }
+
+.confeti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
+
+/* animaciones de entrada */
+.entra { animation: entra .5s cubic-bezier(.2, 1.3, .5, 1) both; }
+.entra-2 { animation-delay: .08s; } .entra-3 { animation-delay: .16s; } .entra-4 { animation-delay: .24s; } .entra-5 { animation-delay: .32s; }
+@keyframes entra { from { opacity: 0; transform: translateY(24px) scale(.96); } }
+.pop { animation: pop .6s cubic-bezier(.2, 1.6, .4, 1) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.3); } }
+.tiembla { animation: tiembla .5s ease-in-out; }
+@keyframes tiembla { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+
+#app { position: relative; z-index: 1; min-height: 100dvh; display: flex; flex-direction: column;
+  padding: max(14px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom)); max-width: 560px; margin: 0 auto; }
+.cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
+.chip { background: var(--papel); border: 2px solid var(--borde); border-radius: 999px; padding: 6px 12px; font-weight: 800; font-size: .9rem; white-space: nowrap; }
+.chip b { color: var(--roca2); }
+.centro { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; padding-bottom: 22vh; }
+.grande { font: 800 clamp(1.8rem, 8vw, 2.6rem)/1.05 var(--titulo); text-align: center; }
+.sub { text-align: center; color: var(--tinta2); font-weight: 700; font-size: 1.05rem; margin: 0; }
+.portada .amonite { width: 120px; height: 120px; margin: 0 auto; display: block; }
+.form { padding: 20px; display: grid; gap: 12px; }
+.form label { font-weight: 800; }
+.form input { font: 800 1.3rem var(--texto); padding: 14px 16px; border-radius: 14px; border: 2px solid var(--borde); background: #fff; color: var(--tinta); width: 100%; outline: none; }
+.form input:focus { border-color: var(--roca2); }
+.form .btn { font-size: 1.15rem; padding: 15px; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.aviso { background: #FFF1D6; border-radius: 12px; padding: 10px 12px; font-weight: 700; font-size: .9rem; text-align: center; }
+.preg { padding: 18px; font: 800 clamp(1.15rem, 5.2vw, 1.5rem)/1.2 var(--titulo); text-align: center; }
+.preg-cab { display: flex; align-items: center; gap: 12px; }
+.preg-cab .preg { flex: 1; }
+.intro-barra { height: 10px; border-radius: 10px; background: var(--borde); overflow: hidden; }
+.intro-barra i { display: block; height: 100%; background: var(--roca2); width: 0; animation: llenar linear forwards; }
+@keyframes llenar { to { width: 100%; } }
+.ops { display: grid; gap: 10px; margin: 14px 0; }
+.op { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px 16px; min-height: 66px; border-radius: 16px; background: var(--col); color: #fff; font-weight: 800; font-size: 1.08rem; line-height: 1.2;
+  box-shadow: 0 6px 0 color-mix(in srgb, var(--col) 60%, #000); transition: transform .1s, box-shadow .1s, opacity .3s, filter .3s; }
+.op:active { transform: translateY(5px); box-shadow: 0 1px 0 color-mix(in srgb, var(--col) 60%, #000); }
+.op svg { width: 30px; height: 30px; flex: none; fill: #fff; }
+.veredicto { padding: 22px 18px; text-align: center; display: grid; gap: 8px; color: #fff; border: 0; }
+.veredicto.bien { background: linear-gradient(160deg, #39b26a, #23874a); }
+.veredicto.mal { background: linear-gradient(160deg, #e05a49, #b33326); }
+.veredicto.nada { background: linear-gradient(160deg, #8a7564, #5d4a3d); }
+.veredicto .icono { font-size: 3.2rem; line-height: 1; }
+.veredicto h2 { font-size: 2rem; }
+.veredicto .pts { font: 800 1.6rem var(--titulo); background: rgba(255,255,255,.2); border-radius: 12px; padding: 6px 14px; justify-self: center; }
+.info { padding: 16px; display: grid; gap: 8px; margin-top: 14px; }
+.info .lbl { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--tinta2); }
+.info .resp-buena { font-weight: 800; font-size: 1.1rem; display: flex; gap: 8px; align-items: center; }
+.info .resp-buena svg { width: 22px; height: 22px; fill: var(--col); flex: none; }
+.dato { background: #FFF1D6; border-radius: 14px; padding: 12px 14px; font-weight: 700; line-height: 1.35; }
+.dato::before { content: '💡 '; }
+.mipos { padding: 20px; text-align: center; display: grid; gap: 6px; }
+.mipos .n { font: 800 3.4rem/1 var(--titulo); color: var(--roca2); }
+.medalla { font-size: 4.5rem; text-align: center; line-height: 1; }
+.siguiente { margin-top: 14px; width: 100%; font-size: 1.15rem; }
+.barra-sig { height: 6px; border-radius: 6px; background: var(--borde); overflow: hidden; margin-top: 8px; }
+.barra-sig i { display: block; height: 100%; background: var(--roca1); width: 0; animation: llenar linear forwards; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// Cosas compartidas entre jugador y admin
+'use strict';
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const $ = (sel, el = document) => el.querySelector(sel);
+const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
+
+// Formas de las respuestas (triángulo, rombo, círculo, cuadrado)
+const FORMAS = [
+  '<svg viewBox="0 0 24 24"><path d="M12 3 22 20H2z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M12 2 22 12 12 22 2 12z"/></svg>',
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/></svg>',
+  '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>'
+];
+const LETRAS = ['A', 'B', 'C', 'D'];
+
+// Ammonites (fósil del museo de Josa) dibujado con una espiral logarítmica
+function amonite(cls = '') {
+  const cx = 50, cy = 50, vueltas = 3.1, N = 260, rMin = 2.2, rMax = 45;
+  const b = Math.log(rMax / rMin) / (vueltas * 2 * Math.PI);
+  const r = th => rMin * Math.exp(b * th);
+  const pts = [];
+  for (let i = 0; i <= N; i++) {
+    const th = i / N * vueltas * 2 * Math.PI;
+    pts.push(`${(cx + r(th) * Math.cos(th)).toFixed(2)},${(cy + r(th) * Math.sin(th)).toFixed(2)}`);
+  }
+  let costillas = '';
+  const total = vueltas * 2 * Math.PI;
+  for (let th = 2 * Math.PI; th <= total; th += 0.32) {
+    const ri = r(th - 2 * Math.PI), ro = r(th);
+    const c = Math.cos(th), s = Math.sin(th);
+    costillas += `M${(cx + ri * c).toFixed(2)},${(cy + ri * s).toFixed(2)}L${(cx + ro * c).toFixed(2)},${(cy + ro * s).toFixed(2)}`;
+  }
+  return `<svg class="amonite ${cls}" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="47" class="am-fondo"/>
+    <path d="${costillas}" class="am-costillas"/>
+    <polyline points="${pts.join(' ')}" class="am-espiral"/>
+  </svg>`;
+}
+
+// Paisaje: cañón del río Sus, muelas y el pueblo con la torre de la iglesia
+function paisaje() {
+  return `<div class="paisaje" aria-hidden="true">
+  <div class="sol"></div>
+  <div class="nube n1"></div><div class="nube n2"></div><div class="nube n3"></div>
+  <svg class="capa c3" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path d="M0 190 L70 150 L160 148 L190 120 L330 118 L360 150 L470 160 L520 110 L700 106 L730 140 L860 150 L900 100 L1060 96 L1100 140 L1200 150 V300 H0Z"/>
+  </svg>
+  <svg class="capa c2" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path d="M0 220 L90 200 L120 160 L300 156 L340 196 L420 210 L470 180 L560 178 L600 214 L760 222 L800 170 L980 164 L1020 205 L1200 215 V300 H0Z"/>
+  </svg>
+  <svg class="pueblo" viewBox="0 0 260 120">
+    <g class="casas">
+      <rect x="20" y="78" width="34" height="30"/><path d="M16 80 L37 64 L58 80Z"/>
+      <rect x="58" y="70" width="40" height="38"/><path d="M54 72 L78 56 L102 72Z"/>
+      <!-- torre de la iglesia: dos cuerpos cuadrados y uno octogonal -->
+      <rect x="112" y="46" width="28" height="62"/>
+      <rect x="114" y="28" width="24" height="20"/>
+      <rect x="117" y="12" width="18" height="18" rx="3"/>
+      <path d="M116 13 L126 0 L136 13Z"/>
+      <rect x="122" y="32" width="8" height="12" rx="4" class="hueco"/>
+      <rect x="140" y="62" width="60" height="46"/><path d="M136 64 L170 46 L204 64Z"/>
+      <rect x="204" y="80" width="36" height="28"/><path d="M200 82 L222 68 L244 82Z"/>
+    </g>
+  </svg>
+  <svg class="capa c1" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path d="M0 250 L140 240 L180 200 L380 196 L420 238 L540 246 L610 250 L700 244 L740 205 L900 200 L940 240 L1200 252 V300 H0Z"/>
+    <path class="rio" d="M0 282 C200 270 380 292 600 280 S1000 268 1200 284 V300 H0Z"/>
+  </svg>
+</div>`;
+}
+
+// Confeti con canvas
+function confeti(cantidad = 160, duracion = 3200) {
+  const cv = document.createElement('canvas');
+  cv.className = 'confeti';
+  document.body.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr;
+  const cols = ['#D94A3A', '#2D77C8', '#E4A11B', '#3F9A55', '#C8693A', '#FFF3D6'];
+  const ps = Array.from({ length: cantidad }, () => ({
+    x: W / 2 + (Math.random() - .5) * W * .3, y: H * .35,
+    vx: (Math.random() - .5) * 18 * dpr, vy: (-Math.random() * 16 - 6) * dpr,
+    r: (4 + Math.random() * 6) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .4,
+    c: cols[(Math.random() * cols.length) | 0]
+  }));
+  const t0 = performance.now();
+  (function paso(t) {
+    const e = t - t0;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of ps) {
+      p.vy += .45 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+      ctx.globalAlpha = Math.max(0, 1 - e / duracion);
+      ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore();
+    }
+    if (e < duracion) requestAnimationFrame(paso); else cv.remove();
+  })(t0);
+}
+
+// Anillo de cuenta atrás. devuelve función para parar
+function cuentaAtras(el, finEn, totalMs, alTick) {
+  const C = 2 * Math.PI * 44;
+  el.innerHTML = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" class="ca-fondo"/>
+    <circle cx="50" cy="50" r="44" class="ca-barra" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg><span></span>`;
+  const barra = $('.ca-barra', el), num = $('span', el);
+  let vivo = true, ultimo = -1;
+  (function paso() {
+    if (!vivo) return;
+    const resta = Math.max(0, finEn - performance.now());
+    barra.style.strokeDashoffset = C * (1 - resta / totalMs);
+    const s = Math.ceil(resta / 1000);
+    if (s !== ultimo) { ultimo = s; num.textContent = s; el.classList.toggle('urgente', s <= 5); alTick && alTick(s); }
+    if (resta > 0) requestAnimationFrame(paso);
+  })();
+  return () => { vivo = false; };
+}
+
+function puntos(n) { return Number(n || 0).toLocaleString('es-ES'); }
+
+// Animar un número subiendo
+function contar(el, desde, hasta, ms = 900) {
+  const t0 = performance.now();
+  (function paso(t) {
+    const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = puntos(Math.round(desde + (hasta - desde) * e));
+    if (k < 1) requestAnimationFrame(paso);
+  })(t0);
+}
+
+</script>
+<script>
+'use strict';
+const PREGUNTAS = [{"p":"¿En qué comarca está Josa?","r":["Cuencas Mineras","Bajo Martín","Jiloca","Andorra-Sierra de Arcos"],"c":0,"d":"Josa pertenece a la comarca de Cuencas Mineras, en la provincia de Teruel.","t":20},{"p":"¿Cómo se llama a la gente de Josa?","r":["Josinos","Joseños","Josanos","Joseros"],"c":0,"d":"El gentilicio es josino, josina.","t":20},{"p":"¿Qué río atraviesa Josa y forma su famoso cañón?","r":["El Sus","El Martín","El Guadalope","El Aguasvivas"],"c":0,"d":"El río Sus nace en Armillas y acaba desembocando en el río Martín.","t":20},{"p":"¿Quién es la patrona de Josa?","r":["Santa Lucía","Santa Bárbara","Santa Águeda","Santa Quiteria"],"c":0,"d":"Santa Lucía se celebra el 13 de diciembre.","t":20},{"p":"¿Qué día es San Roque en Josa?","r":["16 de agosto","15 de agosto","24 de julio","8 de septiembre"],"c":0,"d":"San Roque y la Virgen de la Asunción son la fiesta grande: ¡más de 400 personas en el pueblo!","t":20},{"p":"¿Con qué apodo se conoce el paisaje rojizo del río Sus en Josa?","r":["El Cañón del Colorado de Teruel","La Capadocia aragonesa","El Montserrat turolense","La Petra del Sus"],"c":0,"d":"La Muela Serrano, el Cabezo Gordo y Las Coronillas forman ese paisaje de película.","t":20},{"p":"¿A qué altitud aproximada está el pueblo de Josa?","r":["772 metros","1.023 metros","540 metros","915 metros"],"c":0,"d":"El casco urbano está a 772 m; el punto más alto del término llega a 1.023 m.","t":20},{"p":"¿A quién está dedicada la iglesia parroquial de Josa?","r":["La Asunción de Nuestra Señora","San Roque","San Pedro","Santa Lucía"],"c":0,"d":"Es de estilo barroco, con un cimborrio y una sacristía de influencia rococó.","t":20},{"p":"La iglesia se reconstruyó gracias a un obispo nacido en Josa. ¿De qué ciudad era obispo?","r":["Lérida","Teruel","Zaragoza","Huesca"],"c":0,"d":"Fue D. Gregorio Galindo Zabaldica, obispo de Lérida e hijo de Josa.","t":20},{"p":"¿En qué año se terminó la iglesia barroca de Josa?","r":["1732","1610","1798","1855"],"c":0,"d":"Se reedificó en el siglo XVIII y se terminó en 1732.","t":20},{"p":"La parroquia de Josa aparece escrita por primera vez en 1349. ¿Por qué motivo?","r":["Murió su cura por la peste negra","Se quemó en un incendio","La inundó una riada del Sus","La visitó el rey"],"c":0,"d":"La peste negra de 1348-1349 arrasó media Europa... y llegó hasta Josa.","t":20},{"p":"¿Qué queda hoy de la ermita de San Jorge?","r":["Solo ruinas, en lo alto de su cabezo","Es ahora el albergue","Está restaurada y se usa en las fiestas","Se trasladó piedra a piedra a la plaza"],"c":0,"d":"Ya en el siglo XV se documentan dos ermitas en Josa: San Jorge y Santa Lucía.","t":20},{"p":"¿Entre qué años se reedificó la ermita de Santa Lucía?","r":["1624 y 1628","1490 y 1495","1750 y 1760","1902 y 1910"],"c":0,"d":"Está en un extremo del pueblo y la Asociación pide su restauración.","t":20},{"p":"¿Cuántos peirones se conservan en Josa?","r":["5","2","9","14"],"c":0,"d":"Dos de San Roque, uno de San Antón, uno de San Ramón Nonato y uno de San Miguel Arcángel.","t":20},{"p":"¿Qué peirón de Josa desapareció en los años 70?","r":["El de Santa Bárbara","El de San Antón","El de San Miguel","El de San Ramón Nonato"],"c":0,"d":"El peirón de Santa Bárbara desapareció en la década de 1970.","t":20},{"p":"En 2017 se remodeló un antiguo edificio de Josa. ¿Cuál?","r":["El horno de pan","El lavadero","El molino harinero","La escuela"],"c":0,"d":"El viejo horno de pan se remodeló en 2017. Los dos molinos harineros siguen en ruinas.","t":20},{"p":"El primer sábado de mayo hay romería a la ermita de...","r":["La Virgen de la Aliaga","La Virgen del Pilar","La Virgen de la Vega","La Virgen del Carmen"],"c":0,"d":"Y el 15 de mayo, San Isidro, con comida popular.","t":20},{"p":"En la cena popular de las fiestas de agosto, ¿qué se guisa en las antiguas calderas?","r":["Carne de vaca con patatas","Paella de conejo","Migas con uva","Ternasco asado"],"c":0,"d":"La cocinan los propios vecinos en las calderas de toda la vida.","t":20},{"p":"Además del Museo de la Moto, ¿qué otro museo tiene Josa?","r":["Paleontológico (de fósiles)","Del vino","De la minería","Del azafrán"],"c":0,"d":"Empezó como exposición de dos vecinos y fue reconocido como Museo el 16 de agosto de 1991.","t":20},{"p":"¿Cuántas especies distintas de fósiles hay en el museo de Josa?","r":["Más de 200","Unas 20","Unas 50","Más de 5.000"],"c":0,"d":"Más de 200 especies y miles de ejemplares, en once vitrinas.","t":20},{"p":"¿Cómo se llaman los fósiles con forma de espiral, muy típicos del museo?","r":["Ammonites","Trilobites","Estalactitas","Corales"],"c":0,"d":"Los ammonites eran parientes de los calamares con concha. ¡Como el logo de este juego!","t":20},{"p":"En el museo hay dientes de Hipparion. ¿De qué animal actual es antepasado?","r":["El caballo","El elefante","El oso","El lobo"],"c":0,"d":"El Hipparion era un caballito con tres dedos en cada pata.","t":20},{"p":"Cerca de Josa hay un yacimiento de dinosaurios. ¿De qué época son los fósiles?","r":["Cretácico (unos 120 millones de años)","Edad de Hielo (20.000 años)","Época romana","Precámbrico (1.000 millones de años)"],"c":0,"d":"Lo estudia la Universidad de Zaragoza: dinosaurios, cocodrilos, tortugas, ranas...","t":20},{"p":"¿En qué año se inauguró el Museo de la Moto de Josa?","r":["2012","1998","2005","2019"],"c":0,"d":"Se inauguró el 15 de agosto de 2012, en plenas fiestas.","t":20},{"p":"¿Cuántas motos tiene más o menos el Museo de la Moto?","r":["Una treintena","Cinco","Unas cien","Más de trescientas"],"c":0,"d":"Cada moto tiene su ficha: cilindrada, potencia, carburador, año y procedencia.","t":20},{"p":"¿Qué cultivo, hoy casi desaparecido, fue uno de los principales de Josa?","r":["El azafrán","El arroz","El tabaco","El algodón"],"c":0,"d":"El 'oro rojo': el azafrán fue de los cultivos más importantes del pueblo.","t":20},{"p":"Según el diccionario de Madoz (1847), ¿cuántos habitantes tenía Josa?","r":["375","34","1.200","90"],"c":0,"d":"375 almas, 90 casas y una escuela con 20 niños.","t":20},{"p":"¿Cuántos habitantes tiene Josa hoy en el padrón (INE 2025)?","r":["34","120","8","250"],"c":0,"d":"34 censados... ¡pero en fiestas se juntan más de 400!","t":20},{"p":"En la Edad Media, Josa formaba parte de la Comunidad de Aldeas de...","r":["Daroca","Teruel","Calatayud","Albarracín"],"c":0,"d":"Dentro de la Sesma de la Honor de Huesa. La Comunidad se disolvió en 1838.","t":20},{"p":"¿Cuántas bodegas excavadas en la montaña hay en la margen del río Sus?","r":["12","3","25","60"],"c":0,"d":"Doce bodegas... y también una nevera antigua.","t":20},{"p":"¿Para qué servían las antiguas 'neveras' como la de Josa?","r":["Para guardar nieve y hacer hielo","Para guardar el grano","Para encerrar el ganado","Para cocer el pan"],"c":0,"d":"La nieve se pisaba en capas y aguantaba hasta el verano.","t":20},{"p":"¿Por qué pueblo cercano, a 8 km, pasa la carretera Zaragoza-Teruel (A-222)?","r":["Cortes de Aragón","Utrillas","Montalbán","Muniesa"],"c":0,"d":"De Cortes sale la TE-V-1145 hacia Josa. Allí para también el autobús.","t":20},{"p":"Pasando por Josa se llega a dos pueblos del Parque Cultural del Río Martín. ¿Cuáles?","r":["Alcaine y Obón","Utrillas y Escucha","Calamocha y Monreal","Alcañiz y Caspe"],"c":0,"d":"Josa es el camino obligado hacia Alcaine y Obón.","t":20},{"p":"¿Cómo se gobierna el Ayuntamiento de Josa?","r":["En concejo abierto","Con 13 concejales","Lo lleva la Diputación","Por sorteo cada año"],"c":0,"d":"El concejo abierto es un sistema que viene de la Edad Media.","t":20},{"p":"¿A qué partido judicial pertenece Josa?","r":["Calamocha","Alcañiz","Teruel","Montalbán"],"c":0,"d":"En tiempos de Madoz (1847) pertenecía al partido judicial de Segura.","t":20},{"p":"¿Qué publica cada año la Asociación Cultural Amigos de Josa?","r":["Una revista","Un calendario de motos","Un disco de jotas","Un periódico diario"],"c":0,"d":"La Asociación existe desde 2008 y se puede descargar la revista en josateruel.com.","t":20},{"p":"¿En qué pueblo nace el río Sus?","r":["Armillas","Josa","Utrillas","Montalbán"],"c":0,"d":"Ya lo decía Madoz en 1847: el riachuelo Sus nace en Armillas.","t":20},{"p":"Además del Sus, ¿qué otro río cruza el término de Josa?","r":["El Radón","El Huerva","El Jiloca","El Pancrudo"],"c":0,"d":"El Sus va hacia el río Seco y el Radón hacia el Martín. Los dos llevan poca agua.","t":20},{"p":"Al estrecho del río Sus en Josa lo llaman 'Focino'. ¿Cómo lo llaman en Alcaine?","r":["Hocino","La Foz","La Garganta","El Cañizo"],"c":0,"d":"El mismo cañón, dos nombres: Focino en Josa y Hocino en Alcaine, a 5 km.","t":20},{"p":"El río Sus acaba en el río Martín. ¿Junto a qué embalse desemboca?","r":["Cueva Foradada","La Escuriza","Calanda","Santolea"],"c":0,"d":"Desemboca pasada la presa de Cueva Foradada; en su último tramo se le llama río Seco.","t":20}];
+const app = $('#app');
+document.body.insertAdjacentHTML('afterbegin', paisaje());
+let J = null, timers = [], pararCuenta = null;
+const limpiar = () => { timers.forEach(clearTimeout); timers = []; if (pararCuenta) { pararCuenta(); pararCuenta = null; } };
+const luego = (ms, fn) => timers.push(setTimeout(fn, ms));
+function barajar(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function cab() {
+  return '<div class="cab"><div class="marca">' + amonite() + '<div><h1>Trivial de Josa</h1><small>' + esc(J.nombre) + '</small></div></div>' +
+    '<span class="chip">Pregunta <b>' + (J.i + 1) + '</b>/' + J.lista.length + '</span></div>';
+}
+function portada() {
+  limpiar();
+  app.innerHTML = '<div class="centro portada">' +
+    '<div class="entra">' + amonite('gira') + '</div>' +
+    '<h2 class="grande entra entra-2">El Trivial<br>de Josa</h2>' +
+    '<p class="sub entra entra-3">Versión de prueba para un jugador. Contesta rápido para sumar más puntos.</p>' +
+    '<form class="tarjeta form entra entra-4" id="f" autocomplete="off">' +
+    '<label for="nombre">¿Cómo te llamas?</label><input id="nombre" maxlength="18" placeholder="Tu nombre o mote">' +
+    '<div class="dos"><button class="btn" type="submit" data-n="10">10 preguntas</button><button class="btn sec" type="submit" data-n="0">Todas (' + PREGUNTAS.length + ')</button></div>' +
+    '<div class="aviso">Demo: en la partida de verdad juega todo el pueblo a la vez desde el móvil y la clasificación sale en la pantalla grande.</div>' +
+    '</form></div>';
+  let n = 10;
+  $$('#f button').forEach(b => b.onclick = () => n = Number(b.dataset.n));
+  $('#f').onsubmit = e => {
+    e.preventDefault();
+    const lista = barajar(PREGUNTAS).slice(0, n || PREGUNTAS.length).map(q => {
+      const ops = barajar(q.r.map((t, k) => ({ t, ok: k === q.c })));
+      return { ...q, r: ops.map(o => o.t), c: ops.findIndex(o => o.ok) };
+    });
+    J = { nombre: $('#nombre').value.trim() || 'Josino', lista, i: 0, puntos: 0, aciertos: 0 };
+    intro();
+  };
+}
+function intro() {
+  limpiar();
+  const q = J.lista[J.i];
+  app.innerHTML = cab() + '<div class="centro"><p class="sub entra">Pregunta ' + (J.i + 1) + ' de ' + J.lista.length + '</p>' +
+    '<div class="tarjeta preg pop">' + esc(q.p) + '</div><div class="intro-barra"><i style="animation-duration:3000ms"></i></div><p class="sub">¡Prepárate!</p></div>';
+  luego(3000, pregunta);
+}
+function pregunta() {
+  limpiar();
+  const q = J.lista[J.i], T = q.t * 1000, t0 = performance.now();
+  app.innerHTML = cab() + '<div class="preg-cab"><div class="tarjeta preg">' + esc(q.p) + '</div><div class="cuenta" id="cuenta"></div></div>' +
+    '<div class="ops" id="ops">' + q.r.map((r, i) => '<button class="op op-' + 'abcd'[i] + ' entra entra-' + (i + 2) + '" data-i="' + i + '">' + FORMAS[i] + '<span>' + esc(r) + '</span></button>').join('') + '</div>' +
+    '<div style="height:22vh"></div>';
+  pararCuenta = cuentaAtras($('#cuenta'), t0 + T, T);
+  luego(T, () => resultado(null, T));
+  $$('#ops .op').forEach(b => b.onclick = () => {
+    if (navigator.vibrate) navigator.vibrate(40);
+    resultado(Number(b.dataset.i), Math.min(T, performance.now() - t0));
+  });
+}
+function resultado(op, ms) {
+  limpiar();
+  const q = J.lista[J.i], T = q.t * 1000;
+  const ok = op === q.c, pts = ok ? Math.round(1000 * (1 - (ms / T) / 2)) : 0;
+  const antes = J.puntos; J.puntos += pts; if (ok) J.aciertos++;
+  const tipo = op == null ? 'nada' : ok ? 'bien' : 'mal';
+  const ultima = J.i + 1 >= J.lista.length;
+  app.innerHTML = cab() +
+    '<div class="tarjeta veredicto ' + tipo + ' pop" id="ver"><div class="icono">' + { bien: '✅', mal: '❌', nada: '⏱️' }[tipo] + '</div>' +
+    '<h2>' + { bien: '¡Correcto!', mal: '¡Fallaste!', nada: '¡Se acabó el tiempo!' }[tipo] + '</h2>' +
+    (ok ? '<div class="pts">+' + puntos(pts) + '</div>' : '') +
+    '<div style="font-weight:800">Total: <span id="tot">' + puntos(antes) + '</span> puntos</div></div>' +
+    '<div class="tarjeta info entra entra-2"><span class="lbl">Respuesta correcta</span>' +
+    '<div class="resp-buena op-' + 'abcd'[q.c] + '">' + FORMAS[q.c] + esc(q.r[q.c]) + '</div>' +
+    (q.d ? '<div class="dato">' + esc(q.d) + '</div>' : '') + '</div>' +
+    '<button class="btn siguiente entra entra-3" id="sig">' + (ultima ? '🏁 Ver mi resultado' : '▶ Siguiente pregunta') + '</button>' +
+    '<div class="barra-sig"><i style="animation-duration:8000ms"></i></div><div style="height:22vh"></div>';
+  contar($('#tot'), antes, J.puntos, 1100);
+  if (tipo === 'bien') confeti(120); else if (tipo === 'mal') $('#ver').classList.add('tiembla');
+  const sig = () => { J.i++; ultima ? final() : intro(); };
+  $('#sig').onclick = sig;
+  luego(8000, sig);
+}
+function final() {
+  limpiar();
+  const n = J.lista.length, pct = J.aciertos / n;
+  const med = pct >= .8 ? '🥇' : pct >= .6 ? '🥈' : pct >= .4 ? '🥉' : '🎉';
+  const txt = pct >= .8 ? '¡Eres más de Josa que el río Sus!' : pct >= .6 ? '¡Muy bien, josino!' : pct >= .4 ? '¡No está mal!' : '¡Toca subir más al pueblo!';
+  app.innerHTML = '<div class="centro"><div class="medalla pop">' + med + '</div><h2 class="grande entra">' + txt + '</h2>' +
+    '<div class="tarjeta mipos entra entra-2"><span class="sub">' + esc(J.nombre) + '</span><div class="n" id="tot">0</div><span class="sub">puntos · ' + J.aciertos + ' de ' + n + ' aciertos</span></div>' +
+    '<button class="btn entra entra-3" id="otra">Jugar otra vez</button></div>';
+  contar($('#tot'), 0, J.puntos, 1800);
+  confeti(220, 4000);
+  $('#otra').onclick = portada;
+}
+portada();
+</script>
+</body>
+</html>
